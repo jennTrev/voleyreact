@@ -38,6 +38,7 @@ export default function Navbar() {
           { name: "Jugadores", icon: <Users size={18} />, href: "/Usuarios" },
           { name: "Prueba Reacción", icon: <Zap size={18} />, href: "/prueba-reaccion" },
           { name: "Prueba Salto", icon: <Activity size={18} />, href: "/prueba-salto" },
+           { name: "Resultados", icon: <Activity size={18} />, href: "/resultados" },
           {
             name: "Salir",
             icon: <LogOut size={18} />,

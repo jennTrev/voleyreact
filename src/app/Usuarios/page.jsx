@@ -22,6 +22,7 @@ import {
   Eye,
   ChevronLeft,
   ChevronRight,
+  Search,
 } from "lucide-react"
 
 // URL de la API
@@ -30,8 +31,10 @@ const API_URL = "https://jenn.onrender.com"
 export default function UsuariosPage() {
   const router = useRouter()
   const [usuarios, setUsuarios] = useState([])
+  const [usuariosFiltrados, setUsuariosFiltrados] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [busqueda, setBusqueda] = useState("")
 
   // Estados para el formulario
   const [showForm, setShowForm] = useState(false)
@@ -91,6 +94,41 @@ export default function UsuariosPage() {
     fetchUsuarios()
   }, [])
 
+  // Filtrar usuarios cuando cambia la búsqueda
+  useEffect(() => {
+    filtrarUsuarios()
+  }, [busqueda, usuarios])
+
+  // Filtrar usuarios según la búsqueda
+  const filtrarUsuarios = () => {
+    // Primero filtramos solo jugadores
+    const soloJugadores = usuarios.filter((usuario) => usuario.rol === "jugador" || usuario.role === "jugador")
+
+    // Luego aplicamos el filtro de búsqueda si existe
+    if (busqueda.trim() === "") {
+      setUsuariosFiltrados(soloJugadores)
+    } else {
+      const filtrados = soloJugadores.filter(
+        (usuario) =>
+          usuario.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
+          usuario.apellido?.toLowerCase().includes(busqueda.toLowerCase()) ||
+          `${usuario.nombre} ${usuario.apellido}`.toLowerCase().includes(busqueda.toLowerCase()) ||
+          usuario.carrera?.toLowerCase().includes(busqueda.toLowerCase()) ||
+          usuario.user?.toLowerCase().includes(busqueda.toLowerCase()) ||
+          usuario.correo?.toLowerCase().includes(busqueda.toLowerCase()),
+      )
+      setUsuariosFiltrados(filtrados)
+    }
+
+    // Resetear la paginación al primer filtrado
+    setCurrentPage(1)
+  }
+
+  // Limpiar búsqueda
+  const limpiarBusqueda = () => {
+    setBusqueda("")
+  }
+
   // Obtener todos los usuarios
   const fetchUsuarios = async () => {
     try {
@@ -107,6 +145,11 @@ export default function UsuariosPage() {
 
       const data = await response.json()
       setUsuarios(data)
+
+      // Filtrar solo jugadores
+      const soloJugadores = data.filter((usuario) => usuario.rol === "jugador" || usuario.role === "jugador")
+      setUsuariosFiltrados(soloJugadores)
+
       setError("")
     } catch (error) {
       console.error("Error:", error)
@@ -338,8 +381,8 @@ export default function UsuariosPage() {
   // Lógica de paginación
   const indexOfLastUser = currentPage * usersPerPage
   const indexOfFirstUser = indexOfLastUser - usersPerPage
-  const currentUsers = usuarios.slice(indexOfFirstUser, indexOfLastUser)
-  const totalPages = Math.ceil(usuarios.length / usersPerPage)
+  const currentUsers = usuariosFiltrados.slice(indexOfFirstUser, indexOfLastUser)
+  const totalPages = Math.ceil(usuariosFiltrados.length / usersPerPage)
 
   // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
@@ -389,7 +432,7 @@ export default function UsuariosPage() {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold text-black flex items-center">
             <Users className="mr-2 h-8 w-8 text-[#1E3A8A]" />
-            JUGARORES
+            JUGADORES
           </h1>
 
           {/* Botón para crear nuevo usuario */}
@@ -399,8 +442,38 @@ export default function UsuariosPage() {
             disabled={loading}
           >
             <UserPlus className="mr-2 h-5 w-5" />
-            Crear Nuevo Usuario
+            Crear Nuevo Jugador
           </button>
+        </div>
+
+        {/* Buscador de jugadores */}
+        <div className="mb-6">
+          <div className="relative bg-white rounded-xl shadow-md border border-blue-900/20 overflow-hidden transition-all duration-300 hover:shadow-lg">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-blue-900" />
+            </div>
+            <input
+              type="text"
+              placeholder="Buscar jugador por nombre, usuario, correo o carrera..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              className="w-full pl-12 pr-12 py-4 border-none focus:ring-2 focus:ring-blue-900/30 text-gray-800 text-base font-medium placeholder-gray-500"
+            />
+            {busqueda && (
+              <button
+                onClick={limpiarBusqueda}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-blue-900 transition-colors"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
+          </div>
+          {busqueda && (
+            <div className="mt-2 px-2 text-sm font-medium text-blue-900 flex items-center">
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Mostrando {usuariosFiltrados.length} jugadores que coinciden con "{busqueda}"
+            </div>
+          )}
         </div>
 
         {/* Mensaje de error */}
@@ -416,10 +489,14 @@ export default function UsuariosPage() {
           {loading && !showForm && !showDeleteModal ? (
             <div className="p-4 text-center flex justify-center items-center">
               <Loader2 className="h-6 w-6 animate-spin text-[#1E3A8A] mr-2" />
-              <span className="text-black">Cargando usuarios...</span>
+              <span className="text-black">Cargando jugadores...</span>
             </div>
-          ) : usuarios.length === 0 ? (
-            <div className="p-4 text-center text-black">No hay usuarios registrados</div>
+          ) : usuariosFiltrados.length === 0 ? (
+            <div className="p-4 text-center text-black">
+              {busqueda
+                ? "No se encontraron jugadores que coincidan con la búsqueda."
+                : "No hay jugadores registrados."}
+            </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
@@ -434,7 +511,9 @@ export default function UsuariosPage() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Correo
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">Rol</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                      Carrera
+                    </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
                       Acciones
                     </th>
@@ -448,20 +527,7 @@ export default function UsuariosPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-black">{usuario.user}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-black">{usuario.correo}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${
-                            usuario.rol === "jugador"
-                              ? "bg-green-100 text-green-800"
-                              : usuario.rol === "entrenador"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-purple-100 text-purple-800"
-                          }`}
-                        >
-                          {usuario.rol}
-                        </span>
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-black">{usuario.carrera || "No especificada"}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
                           <button
@@ -499,7 +565,7 @@ export default function UsuariosPage() {
         </div>
 
         {/* Paginación */}
-        {usuarios.length > 0 && (
+        {usuariosFiltrados.length > 0 && (
           <div className="flex justify-between items-center mt-4 bg-white p-3 rounded-lg shadow-sm border border-gray-200">
             <button
               onClick={goToPreviousPage}
@@ -833,7 +899,7 @@ export default function UsuariosPage() {
                       ) : (
                         <>
                           <Save className="mr-2 h-4 w-4" />
-                          {formMode === "create" ? "Crear Usuario" : "Actualizar Usuario"}
+                          {formMode === "create" ? "Crear Jugador" : "Actualizar Jugador"}
                         </>
                       )}
                     </button>
@@ -855,7 +921,7 @@ export default function UsuariosPage() {
                 Confirmar Eliminación
               </h2>
               <p className="text-gray-700 mt-2">
-                ¿Está seguro que desea eliminar al usuario "{selectedUser?.nombre} {selectedUser?.apellido}"?
+                ¿Está seguro que desea eliminar al jugador "{selectedUser?.nombre} {selectedUser?.apellido}"?
               </p>
               <p className="text-gray-500 text-sm mt-1">Esta acción no se puede deshacer.</p>
             </div>
