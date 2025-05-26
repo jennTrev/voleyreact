@@ -13,74 +13,76 @@ export default function Navbar() {
   const navbarRef = useRef(null)
   const selectorRef = useRef(null)
   const navItemsRef = useRef([])
-
-  // Definir menús según el rol
-  const getMenuItems = (role) => {
-    switch (role) {
-      case "jugador":
-        return [
-          { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
-          { name: "Estadísticas", icon: <BarChart2 size={18} />, href: "/estadisticas" },
-          {
-            name: "Salir",
-            icon: <LogOut size={18} />,
-            href: "#",
-            onClick: () => {
-              localStorage.removeItem("userId")
-              localStorage.removeItem("userRole")
-              router.push("/")
-            },
+const getMenuItems = (role) => {
+  switch (role) {
+    case "jugador":
+      return [
+        { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
+        { name: "Estadísticas", icon: <BarChart2 size={18} />, href: "/estadisticas" },
+        { name: "Ranking", icon: <BarChart2 size={18} />, href: "/ranking" }, // Nuevo elemento
+        {
+          name: "Salir",
+          icon: <LogOut size={18} />,
+          href: "#",
+          onClick: () => {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            router.push("/");
           },
-        ]
-      case "entrenador":
-        return [
-          { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
-          { name: "Jugadores", icon: <Users size={18} />, href: "/Usuarios" },
-          { name: "Prueba Reacción", icon: <Zap size={18} />, href: "/prueba-reaccion" },
-          { name: "Prueba Salto", icon: <Activity size={18} />, href: "/prueba-salto" },
-           { name: "Resultados", icon: <Activity size={18} />, href: "/resultados" },
-          {
-            name: "Salir",
-            icon: <LogOut size={18} />,
-            href: "#",
-            onClick: () => {
-              localStorage.removeItem("userId")
-              localStorage.removeItem("userRole")
-              router.push("/")
-            },
+        },
+      ];
+    case "entrenador":
+      return [
+        { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
+        { name: "Jugadores", icon: <Users size={18} />, href: "/Usuarios" },
+        { name: "Prueba Reacción", icon: <Zap size={18} />, href: "/prueba-reaccion" },
+        { name: "Prueba Salto", icon: <Activity size={18} />, href: "/prueba-salto" },
+        { name: "Resultados", icon: <Activity size={18} />, href: "/resultados" },
+        { name: "Ranking", icon: <BarChart2 size={18} />, href: "/ranking" }, // Nuevo elemento
+        {
+          name: "Salir",
+          icon: <LogOut size={18} />,
+          href: "#",
+          onClick: () => {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            router.push("/");
           },
-        ]
-      case "tecnico":
-        return [
-          { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
-          { name: "Monitoreo", icon: <Cpu size={18} />, href: "/monitoreo" },
-          {
-            name: "Salir",
-            icon: <LogOut size={18} />,
-            href: "#",
-            onClick: () => {
-              localStorage.removeItem("userId")
-              localStorage.removeItem("userRole")
-              router.push("/")
-            },
+        },
+      ];
+    case "tecnico":
+      return [
+        { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
+        { name: "Monitoreo", icon: <Cpu size={18} />, href: "/monitoreo" },
+        { name: "Ranking", icon: <BarChart2 size={18} />, href: "/ranking" }, // Nuevo elemento
+        {
+          name: "Salir",
+          icon: <LogOut size={18} />,
+          href: "#",
+          onClick: () => {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            router.push("/");
           },
-        ]
-      default:
-        return [
-          { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
-          {
-            name: "Salir",
-            icon: <LogOut size={18} />,
-            href: "#",
-            onClick: () => {
-              localStorage.removeItem("userId")
-              localStorage.removeItem("userRole")
-              router.push("/")
-            },
+        },
+      ];
+    default:
+      return [
+        { name: "Inicio", icon: <Home size={18} />, href: "/inicio" },
+        {
+          name: "Salir",
+          icon: <LogOut size={18} />,
+          href: "#",
+          onClick: () => {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            router.push("/");
           },
-        ]
-    }
+        },
+      ];
   }
+};
+
 
   // Obtener el rol del usuario al cargar el componente
   useEffect(() => {
