@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { SidebarProvider } from "@/components/ui/sidebar"
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -18,15 +18,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <title>Navbar Example</title>
-        <meta name="description" content="Custom navbar example" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
-      </head>
-      <body className="font-['Roboto',sans-serif] m-0 p-0">{children}</body>
+    <html lang="es">
+      <body>
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
+      </body>
     </html>
   )
 }
-
 

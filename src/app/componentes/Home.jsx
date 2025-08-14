@@ -3,10 +3,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { Users, Trophy, Calendar, Target, Facebook, Instagram, Twitter, MessageCircle, Youtube } from "lucide-react"
+import Navbar from "./navbar"  // <-- Importa tu componente Navbar aquí
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Navbar arriba */}
+      <Navbar />
+
       {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-10 w-32 h-32 bg-[#800020] rounded-full blur-3xl"></div>
@@ -14,74 +18,6 @@ export default function Page() {
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-[#800020] rounded-full blur-3xl"></div>
         <div className="absolute bottom-40 right-10 w-20 h-20 bg-gray-400 rounded-full blur-xl"></div>
       </div>
-
-      {/* Header Navigation */}
-      <header className="relative z-10 px-6 py-4 bg-white shadow-sm border-b border-gray-200">
-        <nav className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-2">
-            <div className="w-12 h-12 bg-[#800020] rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-lg">UV</span>
-            </div>
-            <span className="text-[#800020] font-bold text-xl">Bolivar Voley</span>
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-[#800020] hover:text-[#a64d66] transition-colors font-medium">
-              Inicio
-            </Link>
-            <Link href="/sobre-nosotros" className="text-gray-700 hover:text-[#800020] transition-colors">
-              Sobre Nosotros
-            </Link>
-            <Link href="/horarios-entrenamiento" className="text-gray-700 hover:text-[#800020] transition-colors">
-              Horarios
-            </Link>
-            <Link href="/logros" className="text-gray-700 hover:text-[#800020] transition-colors">
-              Logros
-            </Link>
-            <div className="relative group">
-              <button className="text-gray-700 hover:text-[#800020] transition-colors flex items-center">
-                Categorías
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link
-                  href="/categorias/varones"
-                  className="block px-4 py-2 text-gray-800 hover:bg-[#800020] hover:text-white rounded-t-lg"
-                >
-                  Varones
-                </Link>
-                <Link
-                  href="/categorias/damas"
-                  className="block px-4 py-2 text-gray-800 hover:bg-[#800020] hover:text-white rounded-b-lg"
-                >
-                  Damas
-                </Link>
-              </div>
-            </div>
-            <Link href="/campeonatos" className="text-gray-700 hover:text-[#800020] transition-colors">
-              Campeonatos
-            </Link>
-            <Link href="/contacto" className="text-gray-700 hover:text-[#800020] transition-colors">
-              Contacto
-            </Link>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2">
-              <Facebook className="w-5 h-5 text-gray-600 hover:text-[#800020] cursor-pointer transition-colors" />
-              <Instagram className="w-5 h-5 text-gray-600 hover:text-[#800020] cursor-pointer transition-colors" />
-              <Twitter className="w-5 h-5 text-gray-600 hover:text-[#800020] cursor-pointer transition-colors" />
-              <MessageCircle className="w-5 h-5 text-gray-600 hover:text-[#800020] cursor-pointer transition-colors" />
-              <Youtube className="w-5 h-5 text-gray-600 hover:text-[#800020] cursor-pointer transition-colors" />
-            </div>
-            <Button asChild className="bg-[#800020] hover:bg-[#a64d66] text-white">
-              <Link href="/login">Iniciar Sesión</Link>
-            </Button>
-          </div>
-        </nav>
-      </header>
 
       {/* Main Hero Section */}
       <main className="relative z-10 px-6 py-12">

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import Navbar from "../componentes/navbar"
+import Navbar from "../componentes/sidebar"
 import { Trophy, Medal, Award, Target, Zap, BarChart3 } from "lucide-react"
 
 const API_URL = "https://jenn.onrender.com"

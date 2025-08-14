@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Navbar from "../componentes/navbar"
+import Navbar from "../componentes/sidebar"
 import Pusher from "pusher-js"
 import { Play, User, Loader2, Clock, Zap, StopCircle, ChevronUp, ChevronDown, Save, CheckCircle } from 'lucide-react'
 

@@ -1,5 +1,5 @@
-import AuthForm from "../app/componentes/auth-form.jsx"
+import  Page from "../app/componentes/Home"
 
 export default function Home() {
-  return <AuthForm />
+  return <Page />
 }
